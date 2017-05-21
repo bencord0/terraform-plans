@@ -1,0 +1,153 @@
+Before terraform/matchbox can take over the specific provisioning for your hosts,
+you need to setup the DHCP/PXE environment.
+
+Most computers have the ability to boot using the Preboot eXecution Environment, PXE.
+Without any prior infomation, a fresh machine can auto-discover (via DHCP) it's boot
+configuration and execute a supplied operating system (downloaded via TFTP, a UDP protocol).
+
+Modern bootloaders (e.g. grub, iPXE) support downloading their configuration files and
+operating systems over HTTP(S). (matchbox)[https://coreos.com/matchbox/docs/latest/] is
+a HTTP server that can provide machine specific boot configurations based on
+(terraform)[https://www.terraform.io/] templates. (coreos)[https://coreos.com] have
+implemented a (terraform plugin)[https://github.com/coreos/terraform-provider-matchbox]
+for matchbox.
+
+Manual Steps
+============
+
+ISC DHCP
+========
+  
+  $ emerge net-misc/dhcp
+
+You will need the server USE flag, enabled by default.
+
+Feel free to use the `dhcpd.conf` with tweaks for your own network.
+
+The important thing to configure is `next-server 192.168.1.1`, the address of your
+TFTP server and `filename "pxelinux.0";` a relative path to the tftproot directory
+that holds the bootloader binary.
+
+in.tftpdd
+=========
+
+  $ emerge net-ftp/tftp-hpa
+
+I have my tftp root directory at `/tftproot`.
+The systemd unit files are `tftp.socket`, to listen on UDP port 69,
+and `tftp.service`, to expose the `/tftproot` directory.
+
+PXELINUX
+========
+
+  $ emerge sys-boot/syslinux
+
+No special compile time configuration is needed. Just copy the following files
+to the tftproot.
+
+  ldlinux.32
+  mboot.c32
+  menu.c32
+  pxelinux.0
+
+The PXELINUX boot loader searches for MAC/IP address specific configuration
+in the `pxelinux.cfg/` directory (also relative to the tftproot).
+
+If you are not using specific pxelinux configrations, it will fallback to
+`pxelinux.cfg/default`.
+
+```
+label ipxe
+  kernel ipxe.lkrn
+  initrd matchbox.ipxe
+```
+
+The DHCP protocol does not include a way to give args to the "filename" that
+is booted. In order to point iPXE at our matchbox server, we will need to
+provide another way. With PXELINUX, we can provide an iPXE script as "initrd".
+
+Note: Some of my machines have iPXE built in, and I could set `matchbox.ipxe`
+as the dhcpd.conf "filename" parameter, however not all PXE implementations
+support iPXE scripts, and the built-in firmware may not always support https
+downloads. This leave me in the funny situation where iPXE is loaded twice.
+
+  firmware/coreboot -> iPXE (onboard) -> PXELINUX -> iPXE -> Linux
+
+iPXE
+====
+
+  $ emerge sys-boot/ipxe
+You will need to enable some extra options.
+USE="ipv6 lkrn savedconfig"
+
+savedconfig instructs portage to build the ipxe package with a specified compile-time config.
+
+  cat << EOF > /etc/portage/savedconfig/sys-firmware/ipxe-1.0.0_p20160620 
+#undef BANNER_TIMEOUT
+#define BANNER_TIMEOUT 0
+#define NET_PROTO_IPV6
+#define DOWNLOAD_PROTO_HTTPS
+EOF
+
+Copy the ipxe lkrn to the tftproot
+
+  $ cp /usr/share/ipxe/ipxe.lkrn /tftproot/ipxe.lkrn
+
+Add the ipxe script, `matchbox.ipxe`, to /tftproot/matchbox.ipxe, and adjust
+the hostname to point at your own matchbox server (http port).
+
+
+A note on Unpackaged Software
+=============================
+At the moment, the best way to get hold of go binaries, is via `go get`.
+Check that you have at least go 1.8, terraform won't compile with 1.7.
+
+  $ go version
+
+  $ export GOPATH=~/go
+  $ export PATH=$PATH:$GOPATH/bin
+  $ go get github.com/hashicorp/terraform
+  $ go get github.com/coreos/matchbox/cmd/matchbox
+  $ go get github.com/coreos/terraform-provider-matchbox
+
+
+Matchbox
+========
+
+Copy the matchbox binary to the server.
+
+  $ scp ~/go/bin/matchbox matchbox.condi.me:/usr/bin/matchbox
+
+Generate certificates for matchbox. See `matchbox/etc/matchbox/mkcerts.sh` for an example.
+Matchbox's gRPC API is only available over https, and is required for secure
+communication betwen terraform and matchbox.
+
+I'm using let's encrypt certificates for the server, and a custom CA to lock down
+clients which can connect to the matchbox server.
+Copy the `client.crt` and `client.key` files to `~/.matchbox/`.
+
+Finally, make the matchbox runtime directories.
+
+  $ mkdir -p /var/lib/matchbox/{assets,groups,profiles,ignition}
+
+Start the matchbox server with
+  $ matchbox -address 0.0.0.0:80 -rpc-address 0.0.0.0:443
+
+You may need to adjust your DNS or Load Balancer to point at the matchbox server IP.`
+
+Terraform
+=========
+
+  $ cp ~/go/bin/terraform{,-provider-matchbox /usr/bin/
+
+  $ cat <<< EOF > ~/.terraformrc
+providers {
+  matchbox = "/usr/bin/terraform-provider-matchbox"
+}
+EOF
+
+---------
+
+You can now run `terraform plan` from the root of this git repository.
+
+Enjoy.

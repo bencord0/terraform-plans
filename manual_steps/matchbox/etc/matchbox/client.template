@@ -1,0 +1,3 @@
+dn="cn=matchbox-client"
+tls_www_client
+signing_key
