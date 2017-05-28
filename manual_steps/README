@@ -6,10 +6,10 @@ Without any prior infomation, a fresh machine can auto-discover (via DHCP) it's 
 configuration and execute a supplied operating system (downloaded via TFTP, a UDP protocol).
 
 Modern bootloaders (e.g. grub, iPXE) support downloading their configuration files and
-operating systems over HTTP(S). (matchbox)[https://coreos.com/matchbox/docs/latest/] is
+operating systems over HTTP(S). [matchbox](https://coreos.com/matchbox/docs/latest/) is
 a HTTP server that can provide machine specific boot configurations based on
-(terraform)[https://www.terraform.io/] templates. (coreos)[https://coreos.com] have
-implemented a (terraform plugin)[https://github.com/coreos/terraform-provider-matchbox]
+[terraform](https://www.terraform.io/) templates. [coreos](https://coreos.com) have
+implemented a [terraform plugin](https://github.com/coreos/terraform-provider-matchbox)
 for matchbox.
 
 Manual Steps
