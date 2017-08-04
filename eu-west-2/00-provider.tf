@@ -23,3 +23,17 @@ resource "aws_subnet" "default" {
   cidr_block = "10.0.1.0/24"
   map_public_ip_on_launch = true
 }
+
+resource "aws_key_pair" "auth" {
+  key_name = "${var.key_name}"
+  public_key = "${file(var.public_key_path)}"
+}
+
+
+# EC2 Instances
+resource "aws_instance" "web" {
+  instance_type = "t2.nano"
+  ami = "${lookup(var.aws_amis, "eu-west-2")}"
+
+  key_name = "${aws_key_pair.auth.id}"
+}
