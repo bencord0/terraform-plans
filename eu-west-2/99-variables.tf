@@ -13,6 +13,14 @@ variable "aws_amis" {
   }
 }
 
+variable "web_instance_max" {
+  default = 1
+}
+
+variable "web_instance_min" {
+  default = 1
+}
+
 variable "web_instance_count" {
   default = 1
 }
