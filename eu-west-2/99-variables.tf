@@ -12,3 +12,7 @@ variable "aws_amis" {
     eu-west-2 = "ami-eba8be8f"
   }
 }
+
+variable "web_instance_count" {
+  default = 1
+}

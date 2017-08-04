@@ -99,7 +99,7 @@ resource "aws_elb" "web" {
     interval = 30
   }
 
-  instances = ["${aws_instance.web.id}"]
+  instances = ["${aws_instance.web.*.id}"]
   cross_zone_load_balancing = true
   idle_timeout = 400
   connection_draining = true

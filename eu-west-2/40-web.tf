@@ -9,4 +9,6 @@ resource "aws_instance" "web" {
   user_data = "${file("userdata.sh")}"
 
   key_name = "${aws_key_pair.auth.id}"
+
+  count = "${var.web_instance_count}"
 }
