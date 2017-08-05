@@ -15,6 +15,7 @@ resource "aws_launch_configuration" "web_lc" {
   image_id = "${lookup(var.aws_amis, "eu-west-2")}"
 
   security_groups = ["${aws_security_group.elb.id}"]
+  associate_public_ip_address = false
 
   user_data = "${file("userdata.sh")}"
 
