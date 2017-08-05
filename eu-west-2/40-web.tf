@@ -5,6 +5,7 @@ resource "aws_autoscaling_group" "web_asg" {
   desired_capacity = "${var.web_instance_count}"
   launch_configuration = "${aws_launch_configuration.web_lc.name}"
 
+  health_check_type = "ELB"
   load_balancers = ["${aws_elb.web.name}"]
   vpc_zone_identifier = ["${aws_subnet.default.id}"]
 }
