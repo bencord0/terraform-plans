@@ -2,7 +2,6 @@
 resource "aws_autoscaling_group" "web_asg" {
   max_size = "${var.web_instance_max}"
   min_size = "${var.web_instance_min}"
-  desired_capacity = "${var.web_instance_count}"
   launch_configuration = "${aws_launch_configuration.web_lc.name}"
 
   health_check_type = "ELB"
@@ -35,10 +34,6 @@ resource "aws_autoscaling_policy" "web_asp_up" {
 
   policy_type = "SimpleScaling"
   scaling_adjustment = 1
-
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "web_cpu_high" {
@@ -56,4 +51,32 @@ resource "aws_cloudwatch_metric_alarm" "web_cpu_high" {
   }
 
   alarm_actions = ["${aws_autoscaling_policy.web_asp_up.arn}"]
+}
+
+resource "aws_autoscaling_policy" "web_asp_down" {
+  name = "web_scale_down"
+
+  autoscaling_group_name = "${aws_autoscaling_group.web_asg.name}"
+  adjustment_type = "ChangeInCapacity"
+
+  policy_type = "SimpleScaling"
+  scaling_adjustment = -1
+
+}
+
+resource "aws_cloudwatch_metric_alarm" "web_cpu_low" {
+  alarm_name = "web_cpu_low"
+  comparison_operator = "LessThanOrEqualToThreshold"
+  evaluation_periods = "1"
+  metric_name = "CPUCreditUsage"
+  namespace = "AWS/EC2"
+  statistic = "Average"
+  period = "300"
+  threshold = "1"
+
+  dimensions {
+    AutoScalingGroupName = "${aws_autoscaling_group.web_asg.name}"
+  }
+
+  alarm_actions = ["${aws_autoscaling_policy.web_asp_down.arn}"]
 }
