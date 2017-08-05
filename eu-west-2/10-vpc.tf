@@ -21,4 +21,5 @@ resource "aws_instance" "bastion" {
 
   key_name = "${aws_key_pair.auth.id}"
   subnet_id = "${aws_subnet.default.id}"
+  vpc_security_group_ids = ["${aws_security_group.default.id}"]
 }
