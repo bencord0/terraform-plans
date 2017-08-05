@@ -26,3 +26,34 @@ resource "aws_launch_configuration" "web_lc" {
     create_before_destroy = true
   }
 }
+
+resource "aws_autoscaling_policy" "web_asp_up" {
+  name = "web_scale_up"
+
+  autoscaling_group_name = "${aws_autoscaling_group.web_asg.name}"
+  adjustment_type = "ChangeInCapacity"
+
+  policy_type = "SimpleScaling"
+  scaling_adjustment = 1
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "web_cpu_high" {
+  alarm_name = "web_cpu_high"
+  comparison_operator = "LessThanOrEqualToThreshold"
+  evaluation_periods = "1"
+  metric_name = "CPUCreditBalance"
+  namespace = "AWS/EC2"
+  statistic = "Average"
+  period = "300"
+  threshold = "10"
+
+  dimensions {
+    AutoScalingGroupName = "${aws_autoscaling_group.web_asg.name}"
+  }
+
+  alarm_actions = ["${aws_autoscaling_policy.web_asp_up.arn}"]
+}
