@@ -12,3 +12,13 @@ resource "aws_route" "internet_access" {
   destination_cidr_block = "0.0.0.0/0"
   gateway_id = "${aws_internet_gateway.default.id}"
 }
+
+
+# A bastion in the default security group
+resource "aws_instance" "bastion" {
+  instance_type = "t2.nano"
+  ami = "${lookup(var.aws_amis, "eu-west-2")}"
+
+  key_name = "${aws_key_pair.auth.id}"
+  subnet_id = "${aws_subnet.default.id}"
+}

@@ -14,9 +14,13 @@ resource "aws_launch_configuration" "web_lc" {
   instance_type = "t2.nano"
   image_id = "${lookup(var.aws_amis, "eu-west-2")}"
 
-  security_groups = ["${aws_security_group.default.id}"]
+  security_groups = ["${aws_security_group.elb.id}"]
 
   user_data = "${file("userdata.sh")}"
 
   key_name = "${aws_key_pair.auth.id}"
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
