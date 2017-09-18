@@ -29,6 +29,24 @@ resource "matchbox_profile" "kubelet" {
     "root=ZFS=zpool/sysroot",
     "console=ttyS0,115200",
     "init=/usr/lib/systemd/systemd",
-    "zfsforce=1",
+    "zfs_force=1",
+  ]
+}
+
+resource "matchbox_profile" "kubelet_4_12_5" {
+  name = "kubelet-4.12.5"
+
+  cloud_id = "default.yaml.tmpl"
+  container_linux_config = "default.yaml.tmpl"
+
+  kernel = "https://dl.condi.me/kube/vmlinuz-4.12.5-gentoo"
+  initrd = [
+    "https://dl.condi.me/kube/initramfs-4.12.5-gentoo.img",
+  ]
+  args = [
+    "root=ZFS=zpool/sysroot",
+    "console=ttyS0,115200",
+    "init=/usr/lib/systemd/systemd",
+    "zfs_force=1",
   ]
 }

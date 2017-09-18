@@ -30,7 +30,7 @@ resource "matchbox_group" "kube3" {
 
 resource "matchbox_group" "kube4" {
   name = "kube4"
-  profile = "${matchbox_profile.kubelet.name}"
+  profile = "${matchbox_profile.kubelet_4_12_5.name}"
   selector {
     mac = "00:0d:b9:41:d3:f0"
   }
