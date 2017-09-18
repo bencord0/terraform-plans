@@ -5,4 +5,6 @@ resource "openstack_compute_instance_v2" "bastion" {
   flavor_id = "164fcc7e-7771-414f-a607-b388cb7b7aa0"  # vps-ssd-1
   key_pair = "pure"
 
+  # disable the bastion when we don't need it
+  count = 0
 }
