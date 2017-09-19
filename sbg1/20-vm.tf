@@ -6,4 +6,8 @@ resource "openstack_compute_instance_v2" "kube1" {
   key_pair = "pure"
 
   user_data = "${file("./userdata/kube1")}"
+  security_groups = [
+    "ssh",
+    "web",
+  ]
 }
