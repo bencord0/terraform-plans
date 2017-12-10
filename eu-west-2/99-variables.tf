@@ -4,6 +4,10 @@ variable "public_key_path" {
 variable "key_name" {
 }
 
+variable "region" {
+  default = "eu-west-2"
+}
+
 variable "aws_amis" {
   # Use the CoreOS HVM AMIs
   # https://coreos.com/os/docs/latest/booting-on-ec2.html

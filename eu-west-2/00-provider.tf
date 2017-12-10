@@ -1,10 +1,10 @@
 provider "aws" {
-  region = "eu-west-2"
+  region = "${var.region}"
 }
 
 terraform {
   backend "consul" {
     address = "https://consul.condi.me"
-    path = "eu-west-1/terraform_state"
+    path = "eu-west-2/terraform_state"
   }
 }
