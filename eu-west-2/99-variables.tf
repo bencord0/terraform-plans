@@ -8,6 +8,14 @@ variable "region" {
   default = "eu-west-2"
 }
 
+variable "azs" {
+  default = "eu-west-2a,eu-west-2b"
+}
+
+variable "cidrs" {
+  default = "10.0.32.0/20,10.0.96.0/20"
+}
+
 variable "coreos_amis" {
   # Use the CoreOS HVM AMIs
   # https://coreos.com/os/docs/latest/booting-on-ec2.html

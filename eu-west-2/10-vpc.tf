@@ -25,8 +25,8 @@ resource "aws_instance" "bastion" {
   ami = "${lookup(var.coreos_amis, "eu-west-2")}"
 
   key_name = "${aws_key_pair.auth.id}"
-  subnet_id = "${aws_subnet.default.id}"
-  vpc_security_group_ids = ["${aws_security_group.default.id}"]
+  subnet_id = "${aws_subnet.default.0.id}"
+  vpc_security_group_ids = ["${aws_security_group.bastion.id}"]
 
   associate_public_ip_address = true
 }

@@ -1,14 +1,21 @@
 # An internal subnet for EC2 instances
 resource "aws_subnet" "default" {
   vpc_id = "${aws_vpc.default.id}"
-  cidr_block = "10.0.1.0/24"
+
+  count = "${length(split(",", var.azs))}"
+  availability_zone = "${element(split(",", var.azs), count.index)}"
+  cidr_block = "${element(split(",", var.cidrs), count.index)}"
+  ipv6_cidr_block = "${cidrsubnet(aws_vpc.default.ipv6_cidr_block, 8, count.index)}"
+
   map_public_ip_on_launch = true
+  assign_ipv6_address_on_creation = true
 }
 
 # Security Groups
 
 # Instance security group
-resource "aws_security_group" "default" {
+resource "aws_security_group" "bastion" {
+  name = "bastion"
   vpc_id = "${aws_vpc.default.id}"
 
   # SSH from anywhere
@@ -29,7 +36,8 @@ resource "aws_security_group" "default" {
 }
 
 # ELB security group
-resource "aws_security_group" "elb" {
+resource "aws_security_group" "web" {
+  name = "web"
   vpc_id = "${aws_vpc.default.id}"
 
   # HTTP from anywhere
@@ -53,7 +61,7 @@ resource "aws_security_group" "elb" {
     from_port = 22
     to_port = 22
     protocol = "tcp"
-    security_groups = ["${aws_security_group.default.id}"]
+    security_groups = ["${aws_security_group.bastion.id}"]
   }
 
   # Outbound to internet
@@ -70,29 +78,33 @@ resource "aws_security_group" "elb" {
 
 # Load Balancers
 
-# Instance ELB
-resource "aws_elb" "web" {
-  
-  subnets = ["${aws_subnet.default.id}"]
-  security_groups = ["${aws_security_group.elb.id}"]
+resource "aws_alb_target_group" "web" {
+  name = "web"
+  port = 80
+  protocol = "HTTP"
+  vpc_id = "${aws_vpc.default.id}"
+  target_type = "ip"
+}
 
-  listener {
-    instance_port = 80
-    instance_protocol = "http"
-    lb_port = 80
-    lb_protocol = "http"
+resource "aws_alb" "web" {
+  name = "web"
+  security_groups = [
+    "${aws_security_group.web.id}"
+  ]
+  subnets = [
+    "${aws_subnet.default.*.id}"
+  ]
+
+  ip_address_type = "dualstack"
+}
+
+resource "aws_alb_listener" "web" {
+  load_balancer_arn = "${aws_alb.web.arn}"
+  port = "80"
+  protocol = "HTTP"
+
+  default_action {
+    target_group_arn = "${aws_alb_target_group.web.arn}"
+    type = "forward"
   }
-
-  health_check {
-    healthy_threshold = 2
-    unhealthy_threshold = 2
-    timeout = 3
-    target = "HTTP:80/"
-    interval = 10
-  }
-
-  cross_zone_load_balancing = true
-  idle_timeout = 60
-  connection_draining = true
-  connection_draining_timeout = 60
 }
