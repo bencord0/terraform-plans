@@ -21,6 +21,8 @@ resource "aws_route" "internet_access" {
 
 # A bastion in the default security group
 resource "aws_instance" "bastion" {
+  count = 0
+
   instance_type = "t2.nano"
   ami = "${lookup(var.coreos_amis, "eu-west-2")}"
 
