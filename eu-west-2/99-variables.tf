@@ -25,10 +25,18 @@ variable "coreos_amis" {
   }
 }
 
-variable "web_instance_max" {
-  default = 1
+variable "ecs_amis" {
+  # http://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-optimized_AMI.html
+  default = {
+    eu-west-1 = "ami-4cbe0935"
+    eu-west-2 = "ami-dbfee1bf"
+  }
 }
 
-variable "web_instance_min" {
-  default = 1
+variable "instance_max" {
+  default = 5
+}
+
+variable "instance_min" {
+  default = 0
 }
