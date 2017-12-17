@@ -64,7 +64,7 @@ resource "aws_autoscaling_group" "ecs" {
 }
 
 resource "aws_launch_configuration" "ecs" {
-  name = "ecs"
+  name_prefix = "ecs-"
   instance_type = "t2.nano"
   image_id = "${lookup(var.ecs_amis, var.region)}"
 
