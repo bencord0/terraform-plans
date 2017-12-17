@@ -1,10 +1,10 @@
-# An internal subnet for EC2 instances
+# A subnet for EC2 instances
 resource "aws_subnet" "default" {
   vpc_id = "${aws_vpc.default.id}"
 
-  count = "${length(split(",", var.azs))}"
-  availability_zone = "${element(split(",", var.azs), count.index)}"
-  cidr_block = "${element(split(",", var.cidrs), count.index)}"
+  count = "${length(split(",", lookup(var.azs, var.region)))}"
+  availability_zone = "${element(split(",", lookup(var.azs, var.region)), count.index)}"
+  cidr_block = "${cidrsubnet(aws_vpc.default.cidr_block, 4, count.index)}"
   ipv6_cidr_block = "${cidrsubnet(aws_vpc.default.ipv6_cidr_block, 8, count.index)}"
 
   map_public_ip_on_launch = true
