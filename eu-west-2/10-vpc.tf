@@ -33,7 +33,7 @@ resource "aws_route" "internet_access_v6" {
 resource "aws_instance" "bastion" {
   count = "${var.enable_bastion}"
 
-  instance_type = "t2.nano"
+  instance_type = "${var.bastion_instance_type}"
   ami = "${lookup(var.coreos_amis, "eu-west-2")}"
 
   key_name = "${aws_key_pair.auth.id}"

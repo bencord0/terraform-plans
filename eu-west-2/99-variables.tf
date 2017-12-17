@@ -16,6 +16,16 @@ variable "enable_bastion" {
   default = 0
 }
 
+variable "bastion_instance_type" {
+  # Use t2.micro if you qualify for the AWS Free Tier
+  default = "t2.nano"
+}
+
+variable "ecs_instance_type" {
+  # Use t2.micro if you qualify for the AWS Free Tier
+  default = "t2.nano"
+}
+
 variable "cidrs" {
   default = "10.0.32.0/20,10.0.96.0/20"
 }
