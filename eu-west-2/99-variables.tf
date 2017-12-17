@@ -12,6 +12,10 @@ variable "azs" {
   default = "eu-west-2a,eu-west-2b"
 }
 
+variable "enable_bastion" {
+  default = 0
+}
+
 variable "cidrs" {
   default = "10.0.32.0/20,10.0.96.0/20"
 }
