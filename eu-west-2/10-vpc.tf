@@ -12,12 +12,22 @@ resource "aws_vpc" "default" {
 resource "aws_internet_gateway" "default" {
   vpc_id = "${aws_vpc.default.id}"
 }
+
+resource "aws_egress_only_internet_gateway" "default" {
+  vpc_id = "${aws_vpc.default.id}"
+}
+
 resource "aws_route" "internet_access" {
   route_table_id = "${aws_vpc.default.main_route_table_id}"
   destination_cidr_block = "0.0.0.0/0"
   gateway_id = "${aws_internet_gateway.default.id}"
 }
 
+resource "aws_route" "internet_access_v6" {
+  route_table_id = "${aws_vpc.default.main_route_table_id}"
+  destination_ipv6_cidr_block = "::/0"
+  egress_only_gateway_id = "${aws_egress_only_internet_gateway.default.id}"
+}
 
 # A bastion in the default security group
 resource "aws_instance" "bastion" {

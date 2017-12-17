@@ -24,6 +24,7 @@ resource "aws_security_group" "bastion" {
     to_port = 22
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
   }
 
   # Outbound to internet
@@ -32,6 +33,7 @@ resource "aws_security_group" "bastion" {
     to_port = 0
     protocol = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
   }
 }
 
@@ -46,6 +48,7 @@ resource "aws_security_group" "web" {
     to_port = 80
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
   }
 
   # HTTPS from anywhere
@@ -54,6 +57,7 @@ resource "aws_security_group" "web" {
     to_port = 443
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
   }
 
   # SSH from bastion
