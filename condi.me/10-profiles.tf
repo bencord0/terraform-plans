@@ -4,9 +4,9 @@ resource "matchbox_profile" "default" {
   cloud_id = "default.yaml.tmpl"
   container_linux_config = "default.yaml.tmpl"
 
-  kernel = "https://dl.condi.me/gentoo-systemd/20171220/vmlinuz.nosquash"
+  kernel = "https://dl.condi.me/gentoo-systemd/20171230/vmlinuz.nosquash"
   initrd = [
-    "https://dl.condi.me/gentoo-systemd/20171220/initramfs.cpio",
+    "https://dl.condi.me/gentoo-systemd/20171230/initramfs.cpio",
   ]
   args = [
     "console=ttyS0,115200",
@@ -21,32 +21,15 @@ resource "matchbox_profile" "installed" {
   cloud_id = "default.yaml.tmpl"
   container_linux_config = "default.yaml.tmpl"
 
-  kernel = "https://dl.condi.me/gentoo-systemd/20171220/vmlinuz.nosquash"
+  kernel = "https://dl.condi.me/gentoo-systemd/20171230/vmlinuz.nosquash"
   initrd = [
-    "https://dl.condi.me/gentoo-systemd/20171220/initramfs.nosquash",
+    "https://dl.condi.me/gentoo-systemd/20171230/initramfs.nosquash",
   ]
   args = [
     "root=ZFS=zpool/sysroot",
     "console=ttyS0,115200",
     "init=/usr/lib/systemd/systemd",
     "zfs_force=1",
-  ]
-}
-
-resource "matchbox_profile" "kubelet" {
-  name = "kubelet"
-
-  cloud_id = "default.yaml.tmpl"
-  container_linux_config = "default.yaml.tmpl"
-
-  kernel = "https://dl.condi.me/kube/vmlinuz-4.9.16-gentoo",
-  initrd = [
-    "https://dl.condi.me/kube/initramfs-4.9.16-gentoo.img",
-  ]
-  args = [
-    "root=ZFS=zpool/sysroot",
-    "console=ttyS0,115200",
-    "init=/usr/lib/systemd/systemd",
-    "zfs_force=1",
+    "spl.spl.hostid=0",
   ]
 }
