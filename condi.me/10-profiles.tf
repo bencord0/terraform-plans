@@ -29,7 +29,7 @@ resource "matchbox_profile" "installed" {
     "root=ZFS=zpool/sysroot",
     "console=ttyS0,115200",
     "init=/usr/lib/systemd/systemd",
-    "zfs_force=1",
-    "spl.spl.hostid=0",
+    "zfs_force",
+    "spl.spl_hostid=0",
   ]
 }
