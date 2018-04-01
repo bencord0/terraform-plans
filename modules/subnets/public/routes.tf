@@ -7,8 +7,8 @@ resource "aws_route_table" "public" {
   }
 
   route {
-    ipv6_cidr_block        = "::/0"
-    egress_only_gateway_id = "${var.ipv6_gateway_id}"
+    ipv6_cidr_block = "::/0"
+    gateway_id      = "${var.ipv6_gateway_id}"
   }
 
   lifecycle {

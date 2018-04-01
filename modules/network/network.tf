@@ -19,7 +19,7 @@ module "public_subnets" {
   cidr_v6 = "${cidrsubnet(var.vpc_cidr_v6, 4, 0)}"
 
   ipv4_gateway_id = "${aws_internet_gateway.default.id}"
-  ipv6_gateway_id = "${aws_egress_only_internet_gateway.default.id}"
+  ipv6_gateway_id = "${aws_internet_gateway.default.id}"
 }
 
 module "private_subnets" {
