@@ -1,8 +1,6 @@
-variable "public_key_path" {
-}
+variable "public_key_path" {}
 
-variable "key_name" {
-}
+variable "key_name" {}
 
 variable "region" {
   default = "eu-west-2"
@@ -12,7 +10,7 @@ variable "azs" {
   type = "map"
   default = {
     eu-west-1 = "eu-west-1a,eu-west-1b,eu-west-1c"
-    eu-west-2 = "eu-west-2a,eu-west-2b"
+    eu-west-2 = "eu-west-2a,eu-west-2b,eu-west-2c"
     us-east-1 = "us-east-1a,us-east-1b,us-east-1c,us-east-1d,us-east-1e,us-east-1f",
   }
 }
