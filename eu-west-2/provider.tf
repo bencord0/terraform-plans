@@ -1,10 +1,13 @@
 provider "aws" {
-  region = "${var.region}"
+  region  = "${var.region}"
+  profile = "${var.region}"
+}
+
+provider "consul" {
+  address = "consul.condi.me:443"
+  scheme  = "https"
 }
 
 terraform {
-  backend "consul" {
-    address = "https://consul.condi.me"
-    path = "eu-west-2/terraform_state"
-  }
+  backend "consul" {}
 }
