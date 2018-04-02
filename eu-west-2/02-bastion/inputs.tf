@@ -21,7 +21,7 @@ data "consul_keys" "01-vpc" {
 }
 
 locals {
-  vpc_id = "${data.consul_keys.01-vpc.var.vpc_id}"
-  key_name = "${data.consul_keys.01-vpc.var.key_name}"
+  vpc_id            = "${data.consul_keys.01-vpc.var.vpc_id}"
+  key_name          = "${data.consul_keys.01-vpc.var.key_name}"
   public_subnet_ids = "${data.consul_keys.01-vpc.var.public_subnet_ids}"
 }
