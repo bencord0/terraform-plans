@@ -25,6 +25,7 @@ module "public_subnets" {
 module "nat" {
   source = "../nat"
 
+  azs               = "${var.azs}"
   public_subnet_ids = "${module.public_subnets.subnet_ids}"
 }
 
