@@ -1,5 +1,6 @@
 resource "aws_security_group" "bastion" {
   name = "bastion"
+
   vpc_id = "${var.vpc_id}"
 
   # SSH from anywhere
