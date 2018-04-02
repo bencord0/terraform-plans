@@ -1,4 +1,5 @@
 resource "openstack_compute_instance_v2" "kube1" {
+  count = 0
   name = "kube1"
 
   image_id = "fe3e8f33-1f9d-4d57-89a2-6167e3d58571"  # CoreOS Stable

@@ -4,13 +4,13 @@ Terraform plans for OVH (SBG1 region)
 Setting up
 ----------
 
+Source openstack and consul credentials from password-store
+
+  $ source <(pass ovh.co.uk/sbg1)
+
 Initialise terraform using remote state on consul and download the openstack plugin
 
   $ terraform init
-
-Source openstack credentials from password-store
-
-  $ source <(pass ovh.co.uk/sbg1)
 
 Terraforming
 ------------
