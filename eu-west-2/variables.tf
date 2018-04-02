@@ -48,10 +48,10 @@ variable "ecs_amis" {
   }
 }
 
-variable "instance_max" {
+variable "ecs_max_size" {
   default = 5
 }
 
-variable "instance_min" {
+variable "ecs_min_size" {
   default = 0
 }
