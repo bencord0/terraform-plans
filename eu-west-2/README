@@ -2,6 +2,39 @@ Setup
 -----
 
     . <(pass consul.condi.me/terraform-plans)
-    terraform init
 
-    terraform plan
+    for tfdir in 01-vpc 02-bastion 03-ecs 04-apps
+    do
+      pushd "${tfdir}"
+      terraform init --backend-config=backend.tfvars
+      terraform plan
+      popd
+    done
+
+Consul ACL
+----------
+
+```
+key "eu-west-2/" {
+    policy = "write"
+}
+
+session "" {
+    policy = "write"
+}
+
+agent "" {
+    policy = "read"
+}
+```
+
+password-store
+--------------
+Store the following data in your password manager to save secrets
+for the environment. If running in CI or Hosted Terraform, set
+these in their environment.
+
+```
+export AWS_PROFILE=...
+export CONSUL_HTTP_TOKEN=...
+```
