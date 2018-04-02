@@ -1,11 +1,11 @@
 output "subnet_ids" {
-  value = "${aws_subnet.private.*.id}"
+  value = "${join(",", aws_subnet.private.*.id)}"
 }
 
 output "ipv4_cidrs" {
-  value = "${aws_subnet.private.*.cidr_block}"
+  value = "${join(",", aws_subnet.private.*.cidr_block)}"
 }
 
 output "ipv6_cidrs" {
-  value = "${aws_subnet.private.*.ipv6_cidr_block}"
+  value = "${join(",", aws_subnet.private.*.ipv6_cidr_block)}"
 }
