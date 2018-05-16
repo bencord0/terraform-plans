@@ -1,79 +1,16 @@
-Terraform Plans
-===============
+Managing kubernetes from terraform
 
-Provider: matchbox
-This is a PXE based deployment of bare metal machines.
+Setup
+-----
 
-Please read manual_steps/README for first time setup.
+Secrets are store in password-store, note that provider secrets are sourced from
+the environment, not the password-store provider.
 
+    $ source <(pass consul.condi.me/terraform-plans)
+    $ terraform init
 
-Example usage
--------------
+Running
+-------
 
-```
-$ terraform plan
-
-+ matchbox_group.default
-    name:    "default"
-    profile: "default"
-
-+ matchbox_profile.default
-    args.#:   "1"
-    args.0:   "console=ttyS0,115200"
-    initrd.#: "1"
-    initrd.0: "https://dl.condi.me/gentoo-systemd/latest/initramfs.cpio"
-    kernel:   "https://dl.condi.me/gentoo-systemd/latest/vmlinuz.nosquash"
-    name:     "default"
-
-
-Plan: 2 to add, 0 to change, 0 to destroy.
-```
-
-```
-$ terraform apply
-
-matchbox_profile.default: Creating...
-  args.#:   "" => "1"
-  args.0:   "" => "console=ttyS0,115200"
-  initrd.#: "" => "1"
-  initrd.0: "" => "https://dl.condi.me/gentoo-systemd/latest/initramfs.cpio"
-  kernel:   "" => "https://dl.condi.me/gentoo-systemd/latest/vmlinuz.nosquash"
-  name:     "" => "default"
-matchbox_profile.default: Creation complete (ID: default)
-matchbox_group.default: Creating...
-  name:    "" => "default"
-  profile: "" => "default"
-matchbox_group.default: Creation complete (ID: default)
-
-Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
-```
-
-Now go (re)boot a machine on the network and watch the logs.
-
-```
-net0: 00:0d:b9:xx:xx:xx using i210-2 on PCI01:00.0 (open)
-  [Link:up, TX:0 TXE:0 RX:0 RXE:0]
-Configuring (net0 00:0d:b9:xx:xx:xx)...... ok
-net0: 192.168.1.xxx/255.255.255.0 gw 192.168.1.2
-Next server: 192.168.1.1
-Filename: pxelinux.0
-tftp://192.168.1.1/pxelinux.0... ok
-pxelinux.0 : 40577 bytes [PXE-NBP]
-
-PXELINUX 5.10 2013-06-04  Copyright (C) 1994-2013 H. Peter Anvin et al
-boot: 
-Loading ipxe.lkrn... ok
-Loading matchbox.ipxe...ok
-iPXE initialising devices...ok
-
-
-
-iPXE 1.0.0+ -- Open Source Network Boot Firmware -- http://ipxe.org
-Features: DNS HTTP HTTPS iSCSI TFTP SRP AoE ELF MBOOT PXE bzImage Menu PXEXT
-Configuring (net0 00:0d:b9:41:d3:f0)...... ok
-http://matchbox.condi.me/ipxe... ok
-https://dl.condi.me/gentoo-systemd/latest/vmlinuz.nosquash.... ok 
-https://dl.condi.me/gentoo-systemd/latest/initramfs.cpio... ok 
-
-[kernel takes over...]
-```
+    $ terraform plan
+    $ terraform apply

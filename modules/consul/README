@@ -1,0 +1,15 @@
+Before this will work, add the following ACL to consul and add the token to `terraform.tfvars`.
+
+```hcl
+key "condi.me/config/" {
+  policy = "write"
+}
+
+agent "" {
+  policy = "read"
+}
+
+session "" {
+  policy = "write"
+}
+```
