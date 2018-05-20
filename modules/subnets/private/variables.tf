@@ -1,5 +1,8 @@
 variable "vpc_id" {}
-variable "azs" {}
+
+variable "azs" {
+  type = "list"
+}
 
 variable "cidr_v4" {}
 variable "cidr_v6" {}
