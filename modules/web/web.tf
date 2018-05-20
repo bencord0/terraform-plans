@@ -55,6 +55,6 @@ resource "kubernetes_service" "web" {
       target_port = 80
     }
 
-    type             = "LoadBalancer"
+    type = "LoadBalancer"
   }
 }
