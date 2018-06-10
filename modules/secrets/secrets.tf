@@ -4,8 +4,10 @@ data "pass_password" "registry" {
 
 locals {
   k_namespaces = [
+    "blog",
     "default",
     "gentoo",
+    "kopper",
     "web",
     "webhooks",
   ]
