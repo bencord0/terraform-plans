@@ -5,7 +5,7 @@ verify_ssl = true
 name = "pypi"
 
 [requires]
-python_version = "3.6"
+python_version = "3.9"
 
 [dev-packages]
 
@@ -14,3 +14,4 @@ python_version = "3.6"
 [packages]
 
 "boto3" = "*"
+"python-openstackclient" = "*"
