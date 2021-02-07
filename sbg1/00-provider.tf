@@ -4,6 +4,16 @@ provider "openstack" {
 }
 
 terraform {
+  required_providers {
+    openstack = {
+      source = "terraform-provider-openstack/openstack"
+    }
+
+    consul = {
+      source = "hashicorp/consul"
+    }
+  }
+
   backend "consul" {
     address = "consul.condi.me"
     scheme  = "https"
