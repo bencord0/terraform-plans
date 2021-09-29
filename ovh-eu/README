@@ -1,0 +1,19 @@
+Terraform plans for OVH (EU APIs)
+---------------------------------
+
+Setting up
+----------
+
+Source ovh and consul credentials from password-store
+
+  $ source <(pass ovh.co.uk/ovh-eu)
+
+Initialise terraform using remote state on consul and download the ovh plugin
+
+  $ terraform init
+
+Terraforming
+------------
+
+  $ terraform plan
+  $ terraform apply
