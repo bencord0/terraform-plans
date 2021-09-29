@@ -1,7 +1,9 @@
 resource "ovh_cloud_project_user" "parsley" {
-  description = "API Client (parsley)"
+  service_name = data.ovh_cloud_project.condi.id
+  description  = "API Client (parsley)"
 }
 
 resource "ovh_cloud_project_user" "pure" {
-  description = "API Client (pure)"
+  service_name = data.ovh_cloud_project.condi.id
+  description  = "API client (pure)"
 }
