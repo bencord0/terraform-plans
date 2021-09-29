@@ -17,3 +17,14 @@ Terraforming
 
   $ terraform plan
   $ terraform apply
+
+----------------
+Operational Note
+----------------
+
+https://corporate.ovhcloud.com/en/newsroom/news/informations-site-strasbourg/
+
+After a fire at the strasbourg data center, this region (SBG1) no longer exists.
+This directory remains as an example artifact of the resources hosted, but
+the above commands will no longer since the API endpoints have been removed
+from the service registry.
