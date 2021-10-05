@@ -1,7 +1,7 @@
 resource "aws_security_group" "web" {
   name = "web"
 
-  vpc_id = "${var.vpc_id}"
+  vpc_id = var.vpc_id
 
   # HTTP from anywhere
   ingress {

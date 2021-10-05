@@ -1,12 +1,7 @@
-data "consul_keys" "01-vpc" {
+data "consul_keys" "vpc" {
   key {
     name = "vpc_id"
     path = "${var.region}/01-vpc-outputs/vpc_id"
-  }
-
-  key {
-    name = "key_name"
-    path = "${var.region}/01-vpc-outputs/key_name"
   }
 
   key {
@@ -20,14 +15,14 @@ data "consul_keys" "01-vpc" {
   }
 }
 
-data "consul_keys" "02-bastion" {
+data "consul_keys" "bastion" {
   key {
     name = "bastion_security_group_id"
     path = "${var.region}/02-bastion-outputs/security_group_id"
   }
 }
 
-data "consul_keys" "03-ecs" {
+data "consul_keys" "ecs" {
   key {
     name = "cluster_id"
     path = "${var.region}/03-ecs-outputs/cluster_id"
@@ -35,10 +30,9 @@ data "consul_keys" "03-ecs" {
 }
 
 locals {
-  vpc_id                    = "${data.consul_keys.01-vpc.var.vpc_id}"
-  key_name                  = "${data.consul_keys.01-vpc.var.key_name}"
-  public_subnet_ids         = "${data.consul_keys.01-vpc.var.public_subnet_ids}"
-  private_subnet_ids        = "${data.consul_keys.01-vpc.var.private_subnet_ids}"
-  bastion_security_group_id = "${data.consul_keys.02-bastion.var.bastion_security_group_id}"
-  ecs_cluster_id            = "${data.consul_keys.03-ecs.var.cluster_id}"
+  vpc_id                    = data.consul_keys.vpc.var.vpc_id
+  public_subnet_ids         = split(",", data.consul_keys.vpc.var.public_subnet_ids)
+  private_subnet_ids        = split(",", data.consul_keys.vpc.var.private_subnet_ids)
+  bastion_security_group_id = data.consul_keys.bastion.var.bastion_security_group_id
+  ecs_cluster_id            = data.consul_keys.ecs.var.cluster_id
 }

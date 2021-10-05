@@ -4,7 +4,8 @@
     "image": "nginx",
 
     "cpu": 0,
-    "memory": 128,
+    "memory": 512,
+    "memoryReservation": 128,
 
     "essential": true,
     "portMappings": [
