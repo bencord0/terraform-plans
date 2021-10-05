@@ -1,12 +1,7 @@
-data "consul_keys" "01-vpc" {
+data "consul_keys" "vpc" {
   key {
     name = "vpc_id"
     path = "${var.region}/01-vpc-outputs/vpc_id"
-  }
-
-  key {
-    name = "key_name"
-    path = "${var.region}/01-vpc-outputs/key_name"
   }
 
   key {
@@ -21,7 +16,6 @@ data "consul_keys" "01-vpc" {
 }
 
 locals {
-  vpc_id            = "${data.consul_keys.01-vpc.var.vpc_id}"
-  key_name          = "${data.consul_keys.01-vpc.var.key_name}"
-  public_subnet_ids = "${data.consul_keys.01-vpc.var.public_subnet_ids}"
+  vpc_id            = data.consul_keys.vpc.var.vpc_id
+  public_subnet_ids = split(",", data.consul_keys.vpc.var.public_subnet_ids)
 }

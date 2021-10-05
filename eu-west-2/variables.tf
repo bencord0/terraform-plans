@@ -18,13 +18,12 @@ variable "ecs_instance_type" {
   default = "t2.nano"
 }
 
-variable "coreos_amis" {
-  # Use the CoreOS HVM AMIs
-  # https://coreos.com/os/docs/latest/booting-on-ec2.html
+variable "debian_amis" {
+  # https://wiki.debian.org/Cloud/AmazonEC2Image/Bullseye
   default = {
-    eu-west-1 = "ami-c8a811b1"
-    eu-west-2 = "ami-8ccdd3e8"
-    us-east-1 = "ami-6dfb9a17"
+    eu-west-1 = "ami-01aa1a3fbe264bcd8"
+    eu-west-2 = "ami-0f6e132e485a5e978"
+    us-east-1 = "ami-094a5c9900e98a022"
   }
 }
 

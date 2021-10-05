@@ -12,7 +12,7 @@ Source AWS and consul credentials from password-store
     for tfdir in 01-vpc 02-bastion 03-ecs 04-apps
     do
       pushd "${tfdir}"
-      terraform init --backend-config=backend.tfvars
+      terraform init -backend-config=backend.tfvars
       terraform plan
       popd
     done
