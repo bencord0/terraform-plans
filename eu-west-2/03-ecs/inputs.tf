@@ -1,12 +1,7 @@
-data "consul_keys" "01-vpc" {
+data "consul_keys" "vpc" {
   key {
     name = "vpc_id"
     path = "${var.region}/01-vpc-outputs/vpc_id"
-  }
-
-  key {
-    name = "key_name"
-    path = "${var.region}/01-vpc-outputs/key_name"
   }
 
   key {
@@ -20,7 +15,7 @@ data "consul_keys" "01-vpc" {
   }
 }
 
-data "consul_keys" "02-bastion" {
+data "consul_keys" "bastion" {
   key {
     name = "bastion_security_group_id"
     path = "${var.region}/02-bastion-outputs/security_group_id"
@@ -28,8 +23,7 @@ data "consul_keys" "02-bastion" {
 }
 
 locals {
-  vpc_id                    = "${data.consul_keys.01-vpc.var.vpc_id}"
-  key_name                  = "${data.consul_keys.01-vpc.var.key_name}"
-  private_subnet_ids        = "${data.consul_keys.01-vpc.var.private_subnet_ids}"
-  bastion_security_group_id = "${data.consul_keys.02-bastion.var.bastion_security_group_id}"
+  vpc_id                    = data.consul_keys.vpc.var.vpc_id
+  private_subnet_ids        = split(",", data.consul_keys.vpc.var.private_subnet_ids)
+  bastion_security_group_id = data.consul_keys.bastion.var.bastion_security_group_id
 }

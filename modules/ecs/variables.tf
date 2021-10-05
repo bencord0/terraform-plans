@@ -7,7 +7,8 @@ variable "min_size" {}
 variable "image_id" {}
 variable "instance_type" {}
 
-variable "key_name" {}
-variable "subnet_ids" {}
+variable "subnet_ids" {
+  type = list
+}
 
 variable "bastion_security_group_id" {}

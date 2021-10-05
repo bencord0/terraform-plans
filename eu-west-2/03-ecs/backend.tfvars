@@ -1,2 +1,1 @@
-address = "https://consul.condi.me"
-path = "eu-west-2/03-ecs-state"
+path = "eu-west-2/terraform_state/03-ecs-state"

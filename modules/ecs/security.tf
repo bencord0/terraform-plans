@@ -1,7 +1,7 @@
 resource "aws_security_group" "ecs" {
   name = "ecs"
 
-  vpc_id = "${var.vpc_id}"
+  vpc_id = var.vpc_id
 
   # SSH from bastion
   ingress {
@@ -9,7 +9,9 @@ resource "aws_security_group" "ecs" {
     to_port   = 22
     protocol  = "tcp"
 
-    security_groups = ["${var.bastion_security_group_id}"]
+    security_groups = [
+      var.bastion_security_group_id,
+    ]
   }
 
   # Outbound to the internet
