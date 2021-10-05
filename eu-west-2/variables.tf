@@ -1,7 +1,3 @@
-variable "public_key_path" {}
-
-variable "key_name" {}
-
 variable "region" {
   default = "eu-west-2"
 }

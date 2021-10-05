@@ -1,5 +1,5 @@
 variable "azs" {
-  type = "list"
+  type = list
 }
 
 variable "vpc_id" {}

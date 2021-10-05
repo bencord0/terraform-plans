@@ -1,7 +1,13 @@
-Setup
------
+Terraform plans for AWS (eu-west-2 region)
+------------------------------------------
 
-    . <(pass consul.condi.me/terraform-plans)
+
+Setting up
+----------
+
+Source AWS and consul credentials from password-store
+
+    source <(pass aws.amazon.com/eu-west-2)
 
     for tfdir in 01-vpc 02-bastion 03-ecs 04-apps
     do
@@ -15,16 +21,12 @@ Consul ACL
 ----------
 
 ```
-key "eu-west-2/" {
+key_prefix "eu-west-2" {
     policy = "write"
 }
 
-session "" {
+session_prefix "" {
     policy = "write"
-}
-
-agent "" {
-    policy = "read"
 }
 ```
 
@@ -37,4 +39,7 @@ these in their environment.
 ```
 export AWS_PROFILE=...
 export CONSUL_HTTP_TOKEN=...
+
+# https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html
+aws sso login
 ```
