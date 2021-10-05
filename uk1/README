@@ -1,4 +1,4 @@
-Terraform plans for OVH (SBG1 region)
+Terraform plans for OVH (UK1 region)
 -------------------------------------
 
 Setting up
@@ -7,6 +7,20 @@ Setting up
 Source openstack and consul credentials from password-store
 
   $ source <(pass ovh.co.uk/uk1)
+
+Consul ACL Policy
+-----------------
+
+```hcl
+key_prefix "uk1/terraform_state" {
+  policy = "write"
+}
+
+session_prefix "" {
+  policy = "write"
+}
+
+```
 
 Initialise terraform using remote state on consul and download the openstack plugin
 
