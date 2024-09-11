@@ -4,23 +4,15 @@ Terraform plans for OVH (UK1 region)
 Setting up
 ----------
 
-Source openstack and consul credentials from password-store
+Source openstack credentials from password-store.
 
   $ source <(pass ovh.co.uk/uk1)
 
-Consul ACL Policy
------------------
+Login to [tf.condi.me][TFCONDIME].
 
-```hcl
-key_prefix "uk1/terraform_state" {
-  policy = "write"
-}
+  $ terraform login tf.condi.me
 
-session_prefix "" {
-  policy = "write"
-}
-
-```
+[TFCONDIME]: https://tf.condi.me/app/workspaces/ws-6XjNLMM3F1PvqyGW
 
 Initialise terraform using remote state on consul and download the openstack plugin
 
@@ -31,3 +23,23 @@ Terraforming
 
   $ terraform plan
   $ terraform apply
+
+password-store content
+----------------------
+
+  export OS_AUTH_URL=https://auth.cloud.ovh.net/v3/
+  export OS_PROJECT_ID=...
+  export OS_PROJECT_NAME=...
+  export OS_USERNAME="..."
+  export OS_PASSWORD="..."
+  unset OS_TENANT_NAME
+
+  export OS_REGION_NAME=UK1
+  export OS_INTERFACE=public
+  export OS_IDENTITY_API_VERSION=3
+
+  export OVH_APPLICATION_KEY=...
+  export OVH_APPLICATION_SECRET=...
+  export OVH_CONSUMER_KEY=...
+
+  export PS1="(OVH UK1) $PS1"

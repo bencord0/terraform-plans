@@ -4,20 +4,19 @@ provider "openstack" {
 }
 
 terraform {
-  required_version = ">= 0.14.0"
+  cloud {
+    hostname     = "tf.condi.me"
+    organization = "bencord0"
+
+    workspaces {
+      name = "terraform-plans_uk1"
+    }
+  }
+
+  required_version = ">= 1.0"
   required_providers {
     openstack = {
       source = "terraform-provider-openstack/openstack"
     }
-
-    consul = {
-      source = "hashicorp/consul"
-    }
-  }
-
-  backend "consul" {
-    address = "consul.condi.me"
-    scheme  = "https"
-    path    = "uk1/terraform_state"
   }
 }
